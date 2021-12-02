@@ -13,7 +13,7 @@ const stream = require('stream');
  * 	console.log(username.answer, password.answer);
  * });
  */
-module.exports = function (questions = []) {
+module.exports = function (title, questions = []) {
 	const mutableStdout = new stream.Writable({
 		write(chunk, encoding, callback) {
 			if (!this.muted) {
@@ -29,7 +29,8 @@ module.exports = function (questions = []) {
 		terminal: true
 	});
 
-	console.log('\x1b[32mPROMPTS\x1b[0m\n\x1b[2mPress control+c to exit\x1b[0m');
+	console.log(`\x1b[32m${title}\x1b[0m`);
+	console.log('\x1b[2mPress control+c to exit\x1b[0m');
 
 	let promise = Promise.resolve();
 
