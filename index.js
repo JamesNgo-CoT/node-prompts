@@ -4,6 +4,7 @@ const stream = require('stream');
 /**
  * Provide prompting functionality.
  * @param {{ question: string, answer: string, muted: boolean }[]} questions
+ * @param {string} [title]
  * @returns {{ question: string, answer: string, muted: boolean }[]}
  * @example
  * nodePrompts([
@@ -13,7 +14,7 @@ const stream = require('stream');
  * 	console.log(username.answer, password.answer);
  * });
  */
-module.exports = function (title, questions = []) {
+module.exports = function (questions = [], title) {
 	const mutableStdout = new stream.Writable({
 		write(chunk, encoding, callback) {
 			if (!this.muted) {
@@ -29,8 +30,11 @@ module.exports = function (title, questions = []) {
 		terminal: true
 	});
 
-	console.log(`\x1b[32m${title}\x1b[0m`);
-	console.log('\x1b[2mPress control+c to exit\x1b[0m');
+	if (title) {
+		console.log(`\x1b[32m${title}\x1b[0m`);
+	}
+
+	console.log('\x1b[2mPress ^C at any time to quit.\x1b[0m');
 
 	let promise = Promise.resolve();
 
